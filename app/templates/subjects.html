@@ -1,0 +1,79 @@
+{% extends "admin_dashboard.html" %}
+
+{% block content %}
+<div class = "row">
+    <div class="col-md-5">
+        <h3>Subjects</h3>
+        <p>Manage your subjects here.</p>
+    </div>
+
+    <div class="col-md-5">
+        <form action="" method="post" novalidate>
+            {{ form2.hidden_tag() }}
+            <h5>{{form2.sub_name.label}}</h5>
+            <div class="input-group">
+                {{ form2.sub_name(class="form-control", placeholder="Search...") }}   
+                <button type="submit" class="btn btn-outline-secondary">
+                    <i class="bi bi-search"></i>  <!-- Bootstrap search icon -->
+                </button>
+            </div>
+        </form>
+</div>
+<div class="form-group">
+    <div class = "row">
+        <div class="col-md-5">
+            <form action="" method="post" novalidate>
+                {{ form1.hidden_tag() }}
+                {{form1.sub_name1.label}} {{ form1.sub_name1(size=32) }}<br>
+                {{form1.sub_description1.label}} {{ form1.sub_description1(rows = 3, cols = 36) }}<br>
+                {{ form1.submit() }}
+            </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-messages {% if category == 'success' %}success{% elif category == 'danger' %}error{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+        <div class="col-md-5">
+            {% if subject %}
+                <form method="POST" action="">
+                    {{ form3.hidden_tag() }}
+                    {{ form3.sub_name.label }} 
+                    {{ form3.sub_name(class="form-control") }}
+                    {{ form3.sub_description.label }} 
+                    {{ form3.sub_description(class="form-control", rows=3) }}
+                
+                    <!-- Custom action buttons -->
+                    <br>
+                    <button type="submit" name="action" value="edit" class="btn btn-success">Edit Subject</button>
+                    <button type="submit" name="action" value="delete" class="btn btn-danger">Delete Subject</button>
+                </form>
+            {% else %}
+                <h4>Recent Subjects</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Subject Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sub in all_subjects %}
+                            <tr>
+                                <td>{{ sub.sub_name }}</td>
+                                <td>{{ sub.sub_description }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

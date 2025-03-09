@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>Dashboard</title>
+    </head>
+    <body>
+        <h1>Quiz Master</h1>
+        <h3>Welcome, {{username}}</h3>
+        <nav>
+            <a href="{{ url_for('login') }}">Logout</a>
+        </nav>
+
+        {% block content %}{% endblock %}
+    </body>
+</html>

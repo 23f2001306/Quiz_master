@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
+<nav>
+    <a href="{{ url_for('login') }}">Login</a>
+</nav>
 <h3>Signup</h3>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
-    <div>{{form.username.label}} {{ form.username(size=32) }}</div>
-    <div>{{form.password.label}} {{ form.password(size=32) }}</div>
-    <div>{{form.confirm_pswd.label}} {{ form.confirm_pswd(size=32) }}</div>
-    <div>{{form.name.label}} {{ form.name(size=32) }}</div>
-    <div>{{form.qualification.label}} {{ form.qualification(size=32) }}</div>
-    <div>{{form.dob.label}} {{ form.dob(size=16) }}</div>
-    <div>{{ form.submit() }}</div>
+    {{form.username.label}} {{ form.username(size=32) }}<br>
+    {{form.password.label}} {{ form.password(size=32) }}<br>
+    {{form.confirm_pswd.label}} {{ form.confirm_pswd(size=32) }}<br>
+    {{form.name.label}} {{ form.name(size=32) }}<br>
+    {{form.qualification.label}} {{ form.qualification(size=32) }}<br>
+    {{form.dob.label}} {{ form.dob(size=16) }}<br>
+    {{ form.submit() }}
 </form>
 {% endblock %}
