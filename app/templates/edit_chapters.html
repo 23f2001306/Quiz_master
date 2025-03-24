@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    </head>
+    <body class="d-flex align-items-center justify-content-center vh-100">
+        <div class="col-md-5">
+            <form action="" method="post" novalidate class="form-group">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.chap_name.label }}
+                    {{ form.chap_name(size=32, class="form-control") }}
+                </div>
+                <div class="mb-3">
+                    {{ form.chap_description.label }}
+                    {{ form.chap_description(rows=3, cols=36, class="form-control") }}
+                </div>
+        
+                <div class="d-flex flex-row gap-2">
+                    <button type="submit" name="action" value="edit" class="btn btn-success">Edit Subject</button>
+                    <button type="submit" name="action" value="delete" class="btn btn-danger">Delete Subject</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,7 +1,11 @@
+.bg-custom {
+    background-color: #4d1ee1; 
+}
+
 .form-group label {
-    display: block;  /* Make the label take up the full width */
-    text-align: left;  /* Align the label text to the left */
-    margin-bottom: 3px;  /* Add some space below the label */
+    display: block;  
+    text-align: left;  
+    margin-bottom: 3px;  
 }
 
 .flash-messages {
@@ -19,18 +23,25 @@
 }
 
 .success {
-    background-color: #d4edda; /* Light green */
-    color: #155724;            /* Dark green text */
+    background-color: #d4edda; 
+    color: #155724;            
 }
 
 .error {
-    background-color: #f8d7da; /* Light red */
-    color: #721c24;            /* Dark red text */
+    background-color: #f8d7da; 
+    color: #721c24;            
+}
+
+.admin {
+    background: #8b01fe;
+}
+
+.user {
+    background: #FFB100
 }
 
 .sidebar {
     height: 100vh;
-    background: #8b01fe;
     color: white;
     padding: 20px;
 }
@@ -41,7 +52,12 @@
     padding: 10px;
     margin: 5px 0;
 }
-.sidebar a:hover {
+.sidebar.admin a:hover {
     background: #4d00c7;
+    border-radius: 5px;
+}
+
+.sidebar.user a:hover  {
+    background: #ef9710;
     border-radius: 5px;
 }

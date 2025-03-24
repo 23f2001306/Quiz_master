@@ -1,0 +1,69 @@
+{% extends "admin_dashboard.html" %}
+
+{% block content %}
+<div class = 'row'>
+    <div class="col-md-5">
+        <h3>Quizzes</h3>
+        <p>Manage quizzes here.</p>
+    </div>
+    <div class="col-md-5">
+        <input type="text" class="form-control" placeholder="Search quizzes..." 
+       data-search data-api="/get_quizzes" data-field="quiz_name" data-view-url="/admin_dashboard/edit_quiz?quiz_id=">
+    </div>
+</div>
+<div class="form-group">
+    <div class = "row">
+        <div class = "col-md-5">
+            <form action="" method="post" novalidate>
+                {{ form1.hidden_tag() }}
+                <div class="form-group">
+                    {{form1.chap_id1.label}} {{ form1.chap_id1(class = "form-control") }}
+                </div>
+                <div class = "form-group">
+                    {{form1.quiz_name1.label}} {{form1.quiz_name1(size = 32)}}
+                </div>
+                <div class="form-group">
+                    {{form1.date_of_quiz1.label}} {{ form1.date_of_quiz1(size = 32) }}
+                </div>
+                <div class="form-group">
+                    {{form1.time_duration1.label}} 
+                    {{form1.time_duration1(size = 10,class = "html-duration-picker")}}
+                </div>
+                <div class="form-group">
+                    {{form1.remarks1.label}} {{ form1.remarks1(rows = 3, cols = 36) }}<br>
+                </div>
+                <div class="form-group">
+                    {{ form1.submit() }}
+                </div>
+            </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-messages {% if category == 'success' %}success{% elif category == 'danger' %}error{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+        <div class="col-md-5">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Quiz Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody data-table-body></tbody>
+            </table>
+            <a href = "{{url_for('qtns')}}">
+                <button type ="submit" name="action" value="add" class = "btn btn-outline-primary">Add/remove Qtns</button>
+            </a>
+        </div>
+    </div>   
+</div>
+
+<script src="{{ url_for('static', filename='search.js') }}"></script>
+{% endblock %}

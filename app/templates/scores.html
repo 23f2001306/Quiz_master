@@ -1,0 +1,30 @@
+{% extends "user_dashboard.html" %}
+
+{% block content %}
+
+<div class = "d-flex flex-column align-items-center col-md-9">
+    <div class="d-flex flex-row justify-content-center w-75 align-items-center pt-5">
+        <h4 class="col-md-5 text-center">Attempted Quizzes</h4>
+        <!-- Search Bar Section -->
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Search quizzes..." 
+                   data-search data-api="/get_scores?user_id={{user_id}}" data-field="quiz_name">
+        </div>
+    </div>
+    <div class="container px-5 py-3 col-md-8">        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Quiz Name</th>
+                    <th>Score</th>
+                    <th>Attempted On</th>
+                </tr>
+            </thead>
+            <tbody data-table-body>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='search_score.js') }}"></script>
+{% endblock %}

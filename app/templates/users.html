@@ -1,0 +1,29 @@
+{% extends "admin_dashboard.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+        <h3>Users</h3>
+        <p>View user details here.</p>
+    </div>
+    <div class="col-md-5">
+        <input type="text" class="form-control" placeholder="Search users..." 
+       data-search data-api="/get_users" data-field="username" data-view-url="/admin_dashboard/view_user?user_id=">
+    </div>
+    <div class = "d-flex flex-column align-items-center col-md-10">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Username</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody data-table-body>
+                <!-- Table rows will be added dynamically here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='search.js') }}"></script>
+{% endblock %}

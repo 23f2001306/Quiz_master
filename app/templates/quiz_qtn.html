@@ -1,0 +1,107 @@
+<html>
+    <head>
+        <meta id="quiz-duration" data-duration="{{ delta }}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/moment-duration-format@2.3.0/lib/moment-duration-format.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script>
+            window.addEventListener("beforeunload", function(event) {
+                navigator.sendBeacon("{{ url_for('clear_quiz_session') }}");
+            });
+
+            function jumpToQuestion(index) {
+                let form = document.getElementById("main-quiz-form");
+                let input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "jump-btn";
+                input.value = index;
+
+                form.appendChild(input);
+                form.submit();
+            }
+        </script>
+    </head>
+    <body>
+        <div class="d-flex">
+            <!-- Sidebar for Question Navigation -->
+            <div id="sidebar" class="bg-light p-2" style="width: 100px; height: 100vh; overflow-y: auto; position: fixed;">
+                <h5>Questions</h5>
+                {% for i in range(1, total + 1) %}
+                <button type="button" onclick="jumpToQuestion({{ i - 1 }});"  
+                class="btn {% if i == current_index %}btn-primary{% else %}btn-outline-primary{% endif %} w-100 my-1">
+                    Q{{ i }}
+                </button>
+                {% endfor %}
+            </div>
+
+            <!-- Main Quiz Content -->
+            <div class="container mt-5 flex-grow-1" style="margin-left: 125px; margin-right: 25px;">
+                <h2 class="text-center">{{ quiz.quiz_name }}</h2>
+                <p class="text-center">Question {{ current_index }}/{{ total }} </p>
+                
+            
+            {% if timer == 'true' %}
+                <div id="timer"></div>
+            
+                <script type="text/javascript">
+                    var duration = $('#quiz-duration').data('duration');  
+
+                    if (!sessionStorage.getItem('quiz_end_time')) {
+                        var endTime = moment().add(duration, 'seconds');
+                        sessionStorage.setItem('quiz_end_time', endTime.toString());
+                    } else {
+                        var endTime = moment(sessionStorage.getItem('quiz_end_time'));
+                    }
+                    function updateCountdown() {
+                        var now = moment();
+                        var remainingTime = moment.duration(endTime.diff(now));
+
+                        var formattedTime = (remainingTime.hours() < 10 ? "0" : "") + remainingTime.hours() + ":" +  // Hours
+                                            (remainingTime.minutes() < 10 ? "0" : "") + remainingTime.minutes() + ":" + // Minutes
+                                            (remainingTime.seconds() < 10 ? "0" : "") + remainingTime.seconds();
+                        
+                        $('#timer').html('Time left: ' + formattedTime);
+
+                        if (remainingTime.asSeconds() <= 0) {
+                            clearInterval(countdownInterval);
+                            $('#getting-started').html('Time\'s up!');
+
+                            const button = document.getElementById('quiz-submit');
+                            button.click();
+                        }
+                    }
+
+                    var countdownInterval = setInterval(updateCountdown, 1000);
+
+                    updateCountdown();
+                </script>
+            {% endif %}
+            <form method="POST" id="main-quiz-form">
+                {{ form.hidden_tag() }}
+                <div class="card p-3">
+                    <h4 id="question-text">{{ current_question.question_statement }}</h4>
+
+                    {% for subfield in form.answer %}
+                    <div class="form-check">
+                        {{ subfield(class="form-check-input") }}
+                        <label class="form-check-label">{{ subfield.label.text }}</label>
+                    </div>
+                    {% endfor %}
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <button class="btn btn-dark" name="prev-btn" {% if current_index == 1 %}disabled{% endif %}>Previous</button>
+                        <button class="btn btn-primary" name="next-btn" {% if current_index == total %}disabled{% endif %}>Next</button>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <button class="btn btn-success" id="quiz-submit" name="submit-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

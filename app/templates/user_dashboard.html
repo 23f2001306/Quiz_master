@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Quiz master</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js"></script>
+
+    <script>
+        function viewQuiz(quizId) {
+            window.open('/dashboard/viewquiz?quiz_id=' + quizId, 'View Quiz', 'width=500,height=250');
+        }
+    </script>
+
+    <script>
+        function takeQuiz(quizId) {
+            let isChecked = document.getElementById("enableTimer_" + quizId).checked;
+            let screenWidth = window.screen.width;
+            let screenHeight = window.screen.height;
+
+            window.open(`/dashboard/takequiz?quiz_id=${quizId}&q=0&timer=${isChecked}`, 'View Quiz',`width=${screenWidth},height=${screenHeight},top=0,left=0`);
+            
+        }
+    </script>
+
+</head>
+    <body>
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <div class="sidebar user col-md-2">
+                <div class="d-flex flex-column align-items-center" >
+                    <h4>Hello,{{ username }}</h4>
+                </div>
+                <a href="{{url_for('logout')}}">Logout</a>
+                <a href="{{url_for('dashboard')}}">Quizzes</a>
+                <a href="{{url_for('scores')}}">Scores</a>
+                <a href="{{url_for('user_summary')}}">Summary</a>
+            </div>
+            
+            {% block content %}{% endblock %}
+        </div>
+    </div>

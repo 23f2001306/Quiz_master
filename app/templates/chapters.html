@@ -1,24 +1,27 @@
 {% extends "admin_dashboard.html" %}
 
 {% block content %}
-<div class = "row">
+<div class="row">
     <div class="col-md-5">
-        <h3>Subjects</h3>
-        <p>Manage your subjects here.</p>
+        <h3>Chapters</h3>
+        <p>Manage Chapters here.</p>
     </div>
 
     <div class="col-md-5">
-        <input type="text" class="form-control" placeholder="Search subjects..." 
-       data-search data-api="/get_subjects" data-field="subject_name" data-view-url="/admin_dashboard/edit_subject?subject_id=">
+        <input type="text" class="form-control" placeholder="Search chapters..." 
+       data-search data-api="/get_chapters" data-field="chapter_name" data-view-url="/admin_dashboard/edit_chapter?chapter_id=">
     </div>
 </div>
-<div class="form-group">
+
+<div class = "form-group"> 
     <div class = "row">
         <div class="col-md-5">
             <form action="" method="post" novalidate>
                 {{ form1.hidden_tag() }}
-                {{form1.sub_name1.label}} {{ form1.sub_name1(size=32) }}<br>
-                {{form1.sub_description1.label}} {{ form1.sub_description1(rows = 3, cols = 36) }}<br>
+                {{form1.subject_id.label}}
+                {{form1.subject_id(class="form-control")}}
+                {{form1.chap_name1.label}} {{ form1.chap_name1(size=32) }}<br>
+                {{form1.chap_description1.label}} {{ form1.chap_description1(rows = 3, cols = 36) }}<br>
                 {{ form1.submit() }}
             </form>
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -37,7 +40,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Subject Name</th>
+                        <th>Chapter Name</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -46,6 +49,5 @@
         </div>
     </div>
 </div>
-
 <script src="{{ url_for('static', filename='search.js') }}"></script>
 {% endblock %}

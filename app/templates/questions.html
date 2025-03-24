@@ -1,0 +1,82 @@
+{% extends "admin_dashboard.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+        <h3>Questions</h3>
+        <p>Manage Questions here</p>
+    </div>
+    <div class="col-md-5">
+        <form action="" method="post" novalidate>
+            {{ form1.hidden_tag() }}
+            <h5>{{form1.quiz_id.label}}</h5>
+            <div class="input-group">
+                {{ form1.quiz_id(class="form-control") }}   
+                <button type="submit" name="select_quiz" class="btn btn-secondary">Select</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5 form-group">
+        {% if quiz_id %}
+        <form action="" method="post" novalidate>
+            {{ form2.hidden_tag() }}
+            {{ form2.question_statement.label }} 
+            {{ form2.question_statement(rows=2,cols = 36) }}
+            {{ form2.option1.label }} 
+            {{ form2.option1(size = 32) }}
+            {{ form2.option2.label }} 
+            {{ form2.option2(size = 32) }}
+            {{ form2.option3.label }} 
+            {{ form2.option3(size = 32) }}
+            {{ form2.option4.label }} 
+            {{ form2.option4(size = 32) }}
+            {{ form2.correct_option.label }} 
+            {{ form2.correct_option(class = "form-control") }}<br>
+            <button type="submit" name="add_question" class="btn btn-success">Add Question</button>
+        </form>
+        {% endif %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-messages {% if category == 'success' %}success{% elif category == 'danger' %}error{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+    <div class="col-md-5">
+        {% if quiz_id %}
+        <h4>Questions</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Question</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if all_questions %}
+                {% for qtn in all_questions %}
+                    <tr>
+                        <td>{{ qtn.question_statement }}</td>
+                        <td>
+                            <button type="button" class="btn btn-link" onclick="openPopup('{{ qtn.qtn_id }}');">Edit/Delete</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">No questions found</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>  
+</div>
+{% endblock %}

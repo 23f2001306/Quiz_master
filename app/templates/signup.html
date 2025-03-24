@@ -1,18 +1,86 @@
 {% extends "base.html" %}
 
 {% block content %}
-<nav>
-    <a href="{{ url_for('login') }}">Login</a>
-</nav>
-<h3>Signup</h3>
-<form action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-    {{form.username.label}} {{ form.username(size=32) }}<br>
-    {{form.password.label}} {{ form.password(size=32) }}<br>
-    {{form.confirm_pswd.label}} {{ form.confirm_pswd(size=32) }}<br>
-    {{form.name.label}} {{ form.name(size=32) }}<br>
-    {{form.qualification.label}} {{ form.qualification(size=32) }}<br>
-    {{form.dob.label}} {{ form.dob(size=16) }}<br>
-    {{ form.submit() }}
-</form>
+<div class="container">
+    <div class="row text-center justify-content-center">
+        <div class="col-md-6">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-messages {% if category == 'success' %}success{% elif category == 'danger' %}error{% endif %}">
+                    {{ message }}
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %}
+            <h1 class="fw-bold text-center" style="text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black;">Quiz Master</h1>
+            <div class="card h-200 border-3 border-dark" style="padding: 10px; min-height: auto;">
+                <div class="card-header text-center">
+                    <h5>Signup</h5>
+                </div>
+                <div class="card-body">
+                    <form class="form-group" action="" method="post" novalidate>
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="form-group">
+                            <label for="username">{{ form.username.label }}</label>
+                            {{ form.username(class="form-control", placeholder="Enter your username", id="username") }}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="password">{{ form.password.label }}</label>
+                                    {{ form.password(class="form-control", placeholder="Enter password", id="password") }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="confirm_pswd">{{ form.confirm_pswd.label }}</label>
+                                    {{ form.confirm_pswd(class="form-control", placeholder="Confirm password", id="confirm_pswd") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">{{ form.name.label }}</label>
+                            {{ form.name(class="form-control", placeholder="Enter your full name", id="name") }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="qualification">{{ form.qualification.label }}</label>
+                            {{ form.qualification(class="form-control", placeholder="Enter your qualification", id="qualification") }}
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="dob">{{ form.dob.label }}</label>
+                            {{ form.dob(class="form-control", type="date", id="dob") }}
+                        </div>
+
+                        <div class="form-group text-center">
+                            {{ form.submit(class="btn btn-primary w-100", onclick="Wait('login')") }}
+                        </div>
+
+                    </form>
+                    <div class="text-center mt-2">
+                        <a href="{{ url_for('login') }}" class="btn btn-link">Already have an account? Login</a>
+                    </div>
+                </div>
+            </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash-messages {% if category == 'success' %}success{% elif category == 'danger' %}error{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</div>
 {% endblock %}
