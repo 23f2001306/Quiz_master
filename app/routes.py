@@ -21,20 +21,23 @@ def login():
         user = User.query.filter_by(username=username).first()
         admin = Admin.query.filter_by(username = username).first()
 
-        if admin and admin.password == password:
-            print("Login successful!")  # Debugging line
-            session['username'] = username
-            return redirect(url_for("admin_dashboard"))
-
-        elif user and user.password == password:
-            print("Login successful!")  # Debugging line
-            session['username'] = username
-            return redirect(url_for('dashboard'))
-            
+        if admin:
+            if admin.password == password:
+                print("Login successful!")  # Debugging line
+                session['username'] = username
+                return redirect(url_for("admin_dashboard"))
+            else:
+                flash("Incorrect Password","danger")
+        elif user: 
+            if user.password == password:
+                print("Login successful!")  # Debugging line
+                session['username'] = username
+                return redirect(url_for('dashboard'))
+            else:
+                flash("Incorrect Password","danger")
         else:
-            flash('Invalid credentials, please try again.', 'danger')
-            print("Invalid credentials entered.") 
-            return redirect(url_for('login'))
+            flash("User does not exist","danger")
+            
 
     else:
         print(f"Form validation failed. Errors: {form.errors}")
@@ -171,6 +174,21 @@ def get_chapters():
 def chapters():
     form1 = CreateChapForm()
     form1.subject_id.choices = [(subject.sub_id,subject.sub_name) for subject in Subject.query.all()]
+    if request.method == "POST":
+        if form1.validate_on_submit():
+            subject_id = form1.subject_id.data
+            chap_name = form1.chap_name1.data
+            chap_description = form1.chap_description1.data
+            
+            chapter = Chapter.query.filter_by(chap_name = chap_name).first()
+            if chapter:
+                flash("Chapter already exists","danger")
+            else:
+                new_chap = Chapter(sub_id = subject_id,chap_name = chap_name, chap_description = chap_description)
+                db.session.add(new_chap)
+                db.session.commit()
+                flash("Chapter added","success")
+                return redirect(url_for("chapters"))
     return render_template("chapters.html",form1 = form1)
 
 @app.route("/admin_dashboard/edit_chapter",methods = ["GET","POST"])
